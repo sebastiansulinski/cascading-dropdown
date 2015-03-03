@@ -1,0 +1,30 @@
+{
+  "name": "cascading-dropdown",
+  "version": "1.0.0",
+  "description": "Cascading form dropdown menus with jQuery",
+  "main": "src/jquery.cascading-dropdown.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sebastiansulinski/cascading-dropdown.git"
+  },
+  "keywords": [
+    "jquery-plugin",
+    "ecosystem:jquery",
+    "cascading drop down menu"
+  ],
+  "author": "Sebastian Sulinski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sebastiansulinski/cascading-dropdown/issues"
+  },
+  "dependencies": {
+    "jquery": ">= 1.9"
+  },
+  "homepage": "https://github.com/sebastiansulinski/cascading-dropdown"
+}

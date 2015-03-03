@@ -1,0 +1,16 @@
+{
+    "name": "sebastiansulinski/cascading-dropdown",
+    "description": "Cascading form drop-down menus",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sebastian Sulinski",
+            "email": "info@ssdtutorials.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "dependencies": {
+      "jquery": ">=1.9"
+    }
+}

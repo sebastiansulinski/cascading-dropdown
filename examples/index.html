@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Example</title>
+    <link rel="stylesheet" href="css/zurb-foundation-5.5.1/foundation.min.css">
+    <link rel="stylesheet" href="css/font-awesome-4.3.0/css/font-awesome.min.css">
+    <style>
+        body {
+
+            padding: 2rem 0;
+
+        }
+    </style>
+</head>
+<body>
+
+<div class="row">
+
+    <div class="column">
+
+
+
+
+
+        <form class="dynamicWrapper">
+
+
+
+
+            <div class="row">
+
+                <div class="medium-6 columns">
+                    <label
+                        for="category"
+                        >Category:</label>
+                    <select
+                        name="category"
+                        id="category"
+                        class="cascadingDropDown"
+
+                        data-target="make-1"
+                        data-url="data/make.json?category="
+
+                        >
+                        <option value="">Select category</option>
+                        <option value="1">Shoes</option>
+                        <option value="2">T-shirts</option>
+                        <option value="3">Jeans</option>
+                        <option value="4">Hats</option>
+                        <option value="5">Belts</option>
+                        </select>
+                </div>
+
+                <div class="medium-6 columns">
+                    <label
+                        for="make"
+                        >Make:</label>
+                    <select
+                        name="make"
+                        id="make"
+                        class="cascadingDropDown"
+
+                        data-id="make-1"
+                        data-target="colour-1"
+                        data-url="data/colour.json?make="
+                        data-default-label="Select make"
+
+                        disabled
+                        >
+                        </select>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="medium-6 columns">
+                    <label
+                        for="colour"
+                        >Colour:</label>
+                    <select
+                        name="colour"
+                        id="colour"
+                        class="cascadingDropDown"
+
+                        data-id="colour-1"
+                        data-target="size-1"
+                        data-url="data/size.json?colour="
+                        data-default-label="Select colour"
+
+                        disabled
+                        >
+                        </select>
+                </div>
+
+                <div class="medium-6 columns">
+                    <label
+                        for="size"
+                        >Size:</label>
+                    <select
+                        name="size"
+                        id="size"
+                        class="cascadingDropDown"
+
+                        data-id="size-1"
+                        data-default-label="Select size"
+
+                        disabled
+                        >
+                        </select>
+                </div>
+
+            </div>
+
+
+
+
+        </form>
+
+
+
+
+
+    </div>
+
+</div>
+
+<script src="js/jquery-2.1.3.min.js"></script>
+<script src="js/jquery.cascading-drop-down.min.js"></script>
+<script>
+    $('.cascadingDropDown').ssdCascadingDropDown();
+</script>
+</body>
+</html>

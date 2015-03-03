@@ -1,0 +1,8 @@
+[
+  { "name" : "White", "value" : "1" },
+  { "name" : "Black", "value" : "2" },
+  { "name" : "Yellow", "value" : "3" },
+  { "name" : "Blue", "value" : "4" },
+  { "name" : "Green", "value" : "5" },
+  { "name" : "Red", "value" : "6" }
+]

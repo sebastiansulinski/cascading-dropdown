@@ -14,11 +14,11 @@
 
         var settings = $.extend({
 
-            dataId              : 'id',
-            dataUrl             : 'url',
-            dataTarget          : 'target',
-            dataDefaultLabel    : 'default-label'
-
+            attrDataGroup           : 'group',
+            attrDataId              : 'id',
+            attrDataUrl             : 'url',
+            attrDataTarget          : 'target',
+            attrDataDefaultLabel    : 'default-label'
 
         }, options);
 
@@ -30,7 +30,8 @@
             return (
             typeof value === 'undefined' ||
             value === '' ||
-            value === false
+            value === false ||
+            value.length < 1
             );
 
         }
@@ -95,7 +96,7 @@
 
             target.html(defaultOptionTag(defaultLabel)).prop('disabled', true);
 
-            var newTarget = target.data(settings.dataTarget);
+            var newTarget = target.data(settings.attrDataTarget);
 
             if (isEmpty(newTarget)) {
 
@@ -103,14 +104,49 @@
 
             }
 
-            var targetObject = $('[data-' + settings.dataId + '="' + newTarget + '"]'),
-                targetDefaultLabel = targetObject.data(settings.dataDefaultLabel);
+            var targetObject = $('[data-' + settings.attrDataId + '="' + newTarget + '"]'),
+                targetDefaultLabel = targetObject.data(settings.attrDataDefaultLabel);
 
             if (targetObject.length > 0) {
 
                 resetCascade(targetObject, targetDefaultLabel);
 
             }
+
+        }
+
+        function fetchSelectedData(trigger) {
+
+            "use strict";
+
+            var group = trigger.data(settings.attrDataGroup),
+                items = $('[data-' + settings.attrDataGroup + '="' + group + '"]').not(':disabled'),
+                values = [];
+
+            $.each(items, function() {
+
+                var value = $(this).val();
+
+                if (!isEmpty(value)) {
+
+                    values.push({
+                        "name" : $(this).prop('name'),
+                        "value" : $(this).val()
+                    });
+
+                }
+
+            });
+
+            return values;
+
+        }
+
+        function formatQuery(data) {
+
+            "use strict";
+
+            return $.param(data);
 
         }
 
@@ -128,9 +164,15 @@
 
                 }
 
-                var target = $(this).data(settings.dataTarget),
-                    url = $(this).data(settings.dataUrl),
+                var target = $(this).data(settings.attrDataTarget),
+                    url = $(this).data(settings.attrDataUrl),
                     value = $(this).val();
+
+                if (isEmpty(url)) {
+
+                    return;
+
+                }
 
                 if (isEmpty(target)) {
 
@@ -138,18 +180,22 @@
 
                 }
 
-                var targetObject = $('[data-' + settings.dataId + '="' + target + '"]'),
-                    targetDefaultLabel = targetObject.data(settings.dataDefaultLabel);
+                var targetObject = $('[data-' + settings.attrDataId + '="' + target + '"]'),
+                    targetDefaultLabel = targetObject.data(settings.attrDataDefaultLabel);
+
+
+                resetCascade(targetObject, targetDefaultLabel);
+
 
                 if (isEmpty(value)) {
-
-                    resetCascade(targetObject, targetDefaultLabel);
 
                     return;
 
                 }
 
-                $.getJSON(url + value, function(data) {
+                var selection = fetchSelectedData($(this));
+
+                $.getJSON(url + '?' + formatQuery(selection), function(data) {
 
                     if (!data) {
 
@@ -162,22 +208,6 @@
                         targetObject
                             .html(items)
                             .prop('disabled', false);
-
-                        target = targetObject.data(settings.dataTarget);
-
-                        if (isEmpty(target)) {
-
-                            return;
-
-                        }
-
-                        targetObject = $('[data-' + settings.dataId + '="' + target + '"]'),
-                            targetDefaultLabel = targetObject.data(settings.dataDefaultLabel);
-
-                        resetCascade(
-                            targetObject,
-                            targetDefaultLabel
-                        );
 
                     });
 
@@ -193,7 +223,7 @@
             "use strict";
 
             trigger
-                .html(defaultOptionTag(trigger.data(settings.dataDefaultLabel)))
+                .html(defaultOptionTag(trigger.data(settings.attrDataDefaultLabel)))
                 .prop('disabled', true);
 
         }

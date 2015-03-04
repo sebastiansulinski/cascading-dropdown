@@ -134,3 +134,27 @@ verify                          : true, // whether to run verification with inst
 
 errorCallback                   : function(message, data) { console.warn(message); } // method call when json response was not successful { success : false }. It takes the error message plus the all data returned back with the call
 ```
+
+## Verification
+
+By default plugin will log the missing `data-*` attributes on all selects when it's first instantiated - so if you check console you might see something like:
+
+```
+category is missing attribute data-id
+category is missing attribute data-default-label
+size is missing attribute data-target
+category is missing attribute data-id
+category is missing attribute data-default-label
+size is missing attribute data-target
+```
+
+In the above example the log is referring to the optional parameters on the first and last item.
+
+If you'd like to disable verification simply pass in the argument `verify` set to `false`:
+
+```
+$('.cascadingDropDown').ssdCascadingDropDown({
+    verify : false
+});
+```
+

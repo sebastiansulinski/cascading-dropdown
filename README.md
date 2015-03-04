@@ -259,7 +259,9 @@ With the above overwritten, the response would now be:
 ## Content replacement
 
 With each select, apart from fetching new set of `option`s for the next drop-down, you can also update the content of some container.
+
 The value for the container is passed with the json response with the default index of `replacement`, which can obviously be overwritten (see above).
+
 To do this, you need to add the `data-replacement` attribute to each `select` tag that you want to update the container with the value corresponding to container's `data-replacement-container` attribute.
 
 ```

@@ -112,7 +112,7 @@ To instantiate the plugin without overwriting any default settings simply call i
 </script>
 ```
 
-## Parameters
+## Properties
 
 You can overwrite the following settings of the plugin:
 

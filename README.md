@@ -171,3 +171,87 @@ $('.cascadingDropDown').ssdCascadingDropDown({
     }
 });
 ```
+
+## JSON response structure
+
+The response sent back to the script should use the following format:
+
+```
+{
+  "success": true,
+  "replacement": "Records filtered by the make and any previous selection",
+  "menu": [
+    {
+      "name": "White",
+      "value": "1"
+    },
+    {
+      "name": "Black",
+      "value": "2"
+    },
+    {
+      "name": "Yellow",
+      "value": "3"
+    },
+    {
+      "name": "Blue",
+      "value": "4"
+    },
+    {
+      "name": "Green",
+      "value": "5"
+    },
+    {
+      "name": "Red",
+      "value": "6"
+    }
+  ]
+}
+```
+
+The keys can be overwritten when instantiating the plugin:
+
+```
+$('.cascadingDropDown').ssdCascadingDropDown({
+    indexSuccess        : 'isSuccess',
+    indexError          : 'errorMessage',
+    indexMenu           : 'items',
+    indexReplacement    : 'content'
+});
+```
+
+With the above overwritten, the response would now be:
+
+```
+{
+  "isSuccess": true,
+  "errorMessage" : "", // you can omit it if success is set to true
+  "content": "Records filtered by the make and any previous selection",
+  "items": [
+    {
+      "name": "White",
+      "value": "1"
+    },
+    {
+      "name": "Black",
+      "value": "2"
+    },
+    {
+      "name": "Yellow",
+      "value": "3"
+    },
+    {
+      "name": "Blue",
+      "value": "4"
+    },
+    {
+      "name": "Green",
+      "value": "5"
+    },
+    {
+      "name": "Red",
+      "value": "6"
+    }
+  ]
+}
+```

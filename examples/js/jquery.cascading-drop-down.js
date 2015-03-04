@@ -2,7 +2,7 @@
  * ssdCascadingDropDown jQuery plugin
  * Examples and documentation at: https://github.com/sebastiansulinski/cascading-dropdown
  * Copyright (c) 2015 Sebastian Sulinski
- * Version: 1.2.0 (04-MAR-2015)
+ * Version: 1.2.2 (04-MAR-2015)
  * Licensed under the MIT.
  * Requires: jQuery v1.9 or later
  */

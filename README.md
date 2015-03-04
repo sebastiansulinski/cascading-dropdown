@@ -255,3 +255,61 @@ With the above overwritten, the response would now be:
   ]
 }
 ```
+
+## Content replacement
+
+With each select, apart from fetching new set of `option`s for the next drop-down, you can also update the content of some container.
+To do this, you need to add the `data-replacement` attribute to each `select` tag that you want to update the container with the value corresponding to container's `data-replacement-container` attribute.
+
+```
+<select
+    name="category"
+    class="cascadingDropDown"
+
+    data-group="product-1"
+    data-target="make"
+    data-url="data/make.json"
+    data-replacement="container1"
+
+    >
+    <option value="">Select category</option>
+    <option value="1">Shoes</option>
+    <option value="2">T-shirts</option>
+    <option value="3">Jeans</option>
+    <option value="4">Hats</option>
+    <option value="5">Belts</option>
+    </select>
+```
+
+Container should also have a `data-default-content` attribute, which is to store some default message when the page first loads and when the first menu in the group selects the first (empty) option.
+It should also have a `class` attribute set to `cascadingContainer`.
+
+```
+<div
+    class="cascadingContainer"
+    data-replacement-container="container1"
+    data-default-content="To see results please make your selection using menus above."
+    ></div>
+```
+
+Again, you can overwrite these attributes like so:
+
+```
+$('.cascadingDropDown').ssdCascadingDropDown({
+    attrDataReplacementContainer    : 'rep-container',
+    attrDataReplacementDefault      : 'def-content'
+    classReplacementContainer       : 'container'
+});
+```
+
+With the above, the structure of our container would now be:
+
+```
+<div
+    class="container"
+    data-rep-container="container1"
+    data-def-content="To see results please make your selection using menus above."
+    ></div>
+```
+
+The default content is placed within the container on plugin instantiation so no need for doing it manually.

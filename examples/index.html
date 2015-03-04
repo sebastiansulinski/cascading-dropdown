@@ -11,6 +11,11 @@
             padding: 2rem 0;
 
         }
+        .divider {
+            height: 1.25rem;
+            width: 100%;
+            border-top: dashed 1px #aaa;
+        }
     </style>
 </head>
 <body>
@@ -112,7 +117,13 @@
         </form>
 
 
-        <div data-replacement-container="container1"></div>
+        <div
+            class="panel cascadingContainer"
+            data-replacement-container="container1"
+            data-default-content="To see results please make your selection using menus above."
+            ></div>
+
+        <div class="divider"></div>
 
 
         <form>
@@ -204,7 +215,11 @@
 
         </form>
 
-        <div data-replacement-container="container2"></div>
+        <div
+            class="panel cascadingContainer"
+            data-replacement-container="container2"
+            data-default-content="To see results please make your selection using menus above."
+            ></div>
 
     </div>
 

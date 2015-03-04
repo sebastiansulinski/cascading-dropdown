@@ -23,24 +23,20 @@
 
 
 
-        <form class="dynamicWrapper">
+        <form>
 
 
-
+            <h2>Product 1</h2>
 
             <div class="row">
 
                 <div class="medium-6 columns">
-                    <label
-                        for="category"
-                        >Category:</label>
                     <select
                         name="category"
-                        id="category"
                         class="cascadingDropDown"
 
                         data-group="product-1"
-                        data-target="make-1"
+                        data-target="make"
                         data-url="data/make.json"
 
                         >
@@ -54,17 +50,13 @@
                 </div>
 
                 <div class="medium-6 columns">
-                    <label
-                        for="make"
-                        >Make:</label>
                     <select
                         name="make"
-                        id="make"
                         class="cascadingDropDown"
 
                         data-group="product-1"
-                        data-id="make-1"
-                        data-target="colour-1"
+                        data-id="make"
+                        data-target="colour"
                         data-url="data/colour.json"
                         data-default-label="Select make"
 
@@ -78,17 +70,13 @@
             <div class="row">
 
                 <div class="medium-6 columns">
-                    <label
-                        for="colour"
-                        >Colour:</label>
                     <select
                         name="colour"
-                        id="colour"
                         class="cascadingDropDown"
 
                         data-group="product-1"
-                        data-id="colour-1"
-                        data-target="size-1"
+                        data-id="colour"
+                        data-target="size"
                         data-url="data/size.json"
                         data-default-label="Select colour"
 
@@ -98,16 +86,12 @@
                 </div>
 
                 <div class="medium-6 columns">
-                    <label
-                        for="size"
-                        >Size:</label>
                     <select
                         name="size"
-                        id="size"
                         class="cascadingDropDown"
 
                         data-group="product-1"
-                        data-id="size-1"
+                        data-id="size"
                         data-default-label="Select size"
 
                         disabled
@@ -124,6 +108,90 @@
 
 
 
+        <form>
+
+
+            <h2>Product 2</h2>
+
+
+            <div class="row">
+
+                <div class="medium-6 columns">
+                    <select
+                            name="category"
+                            class="cascadingDropDown"
+
+                            data-group="product-2"
+                            data-target="make"
+                            data-url="data/make.json"
+
+                            >
+                        <option value="">Select category</option>
+                        <option value="1">Shoes</option>
+                        <option value="2">T-shirts</option>
+                        <option value="3">Jeans</option>
+                        <option value="4">Hats</option>
+                        <option value="5">Belts</option>
+                    </select>
+                </div>
+
+                <div class="medium-6 columns">
+                    <select
+                            name="make"
+                            class="cascadingDropDown"
+
+                            data-group="product-2"
+                            data-id="make"
+                            data-target="colour"
+                            data-url="data/colour.json"
+                            data-default-label="Select make"
+
+                            disabled
+                            >
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="medium-6 columns">
+                    <select
+                            name="colour"
+                            class="cascadingDropDown"
+
+                            data-group="product-2"
+                            data-id="colour"
+                            data-target="size"
+                            data-url="data/size.json"
+                            data-default-label="Select colour"
+
+                            disabled
+                            >
+                    </select>
+                </div>
+
+                <div class="medium-6 columns">
+                    <select
+                            name="size"
+                            class="cascadingDropDown"
+
+                            data-group="product-2"
+                            data-id="size"
+                            data-default-label="Select size"
+
+                            disabled
+                            >
+                    </select>
+                </div>
+
+            </div>
+
+
+
+
+        </form>
+
 
 
     </div>
@@ -131,7 +199,7 @@
 </div>
 
 <script src="js/jquery-2.1.3.min.js"></script>
-<script src="js/jquery.cascading-drop-down.min.js"></script>
+<script src="js/jquery.cascading-drop-down.js"></script>
 <script>
     $('.cascadingDropDown').ssdCascadingDropDown();
 </script>

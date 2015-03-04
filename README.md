@@ -2,6 +2,10 @@
 
 jQuery plugin, which allows you to populate a set of form drop-down menus based on the previous selection.
 
+## Demo
+
+(Cascading drop-down menu jQuery plugin)[http://jquery-cascading-dropdown.ssdtutorials.com/]
+
 ## Basic usage
 
 To use the plugin without overwriting any default settings, you'll need to create a structure of the form with a number of drop-down (select) menus.

@@ -2,7 +2,7 @@
  * ssdCascadingDropDown jQuery plugin
  * Examples and documentation at: https://github.com/sebastiansulinski/cascading-dropdown
  * Copyright (c) 2015 Sebastian Sulinski
- * Version: 1.0.0 (03-MAR-2015)
+ * Version: 1.2.0 (04-MAR-2015)
  * Licensed under the MIT.
  * Requires: jQuery v1.9 or later
  */
@@ -22,6 +22,9 @@
             attrDataReplacement             : 'replacement',
 
             attrDataReplacementContainer    : 'replacement-container',
+            attrDataReplacementDefault      : 'default-content',
+
+            classReplacementContainer       : 'cascadingContainer',
 
             indexSuccess                    : 'success',
             indexError                      : 'error',
@@ -40,10 +43,10 @@
             "use strict";
 
             return (
-            typeof value === 'undefined' ||
-            value === '' ||
-            value === false ||
-            value.length < 1
+                typeof value === 'undefined' ||
+                value === '' ||
+                value === false ||
+                value.length < 1
             );
 
         }
@@ -176,6 +179,12 @@
             if (object.length === 0) {
 
                 return;
+
+            }
+
+            if (isEmpty(replacement)) {
+
+                replacement = object.data(settings.attrDataReplacementDefault);
 
             }
 
@@ -391,16 +400,6 @@
 
         }
 
-        function setUp(trigger) {
-
-            "use strict";
-
-            trigger
-                .html(defaultOptionTag(trigger.data(settings.attrDataDefaultLabel)))
-                .prop('disabled', true);
-
-        }
-
         function hasAttribute(attr, instance) {
 
             "use strict";
@@ -433,7 +432,7 @@
 
                     value = 'data-' + value;
 
-                    if (!hasAttribute(value, instance)) {
+                    if ( ! hasAttribute(value, instance)) {
 
                         console.log(
                             instance.prop('name') +
@@ -456,6 +455,32 @@
             return oDeferred.promise();
 
         }
+
+        function setUp(trigger) {
+
+            "use strict";
+
+            trigger
+                .html(defaultOptionTag(trigger.data(settings.attrDataDefaultLabel)))
+                .prop('disabled', true);
+
+        }
+
+        function setUpContainers() {
+
+            "use strict";
+
+            var container = $('.' + settings.classReplacementContainer);
+
+            $.each(container, function () {
+
+                $(this).html($(this).data(settings.attrDataReplacementDefault));
+
+            });
+
+        }
+
+        setUpContainers();
 
         return this.each(function() {
 

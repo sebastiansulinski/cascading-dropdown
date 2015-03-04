@@ -90,7 +90,7 @@
 
         }
 
-        function resetCascade(target, defaultLabel) {
+        function resetCascade(group, target, defaultLabel) {
 
             "use strict";
 
@@ -104,12 +104,12 @@
 
             }
 
-            var targetObject = $('[data-' + settings.attrDataId + '="' + newTarget + '"]'),
+            var targetObject = $('[data-' + settings.attrDataGroup + '="' + group + '"][data-' + settings.attrDataId + '="' + newTarget + '"]'),
                 targetDefaultLabel = targetObject.data(settings.attrDataDefaultLabel);
 
             if (targetObject.length > 0) {
 
-                resetCascade(targetObject, targetDefaultLabel);
+                resetCascade(group, targetObject, targetDefaultLabel);
 
             }
 
@@ -185,7 +185,7 @@
                     targetDefaultLabel = targetObject.data(settings.attrDataDefaultLabel);
 
 
-                resetCascade(targetObject, targetDefaultLabel);
+                resetCascade(group, targetObject, targetDefaultLabel);
 
 
                 if (isEmpty(value)) {

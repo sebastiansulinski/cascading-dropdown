@@ -158,3 +158,16 @@ $('.cascadingDropDown').ssdCascadingDropDown({
 });
 ```
 
+## Error callback
+
+When the ajax call has returned a valid data with the `success` set to false - the `errorCallback` is executed. You can overwrite it with your own error handling by passing the function as `errorCallback` argument. Function takes 2 arguments - first being the actual error message returned in json format - second the whole json response.
+
+```
+$('.cascadingDropDown').ssdCascadingDropDown({
+    errorCallback : function(message, data) {
+
+        alert(message);
+
+    }
+});
+```

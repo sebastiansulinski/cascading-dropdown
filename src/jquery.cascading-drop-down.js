@@ -14,11 +14,23 @@
 
         var settings = $.extend({
 
-            attrDataGroup           : 'group',
-            attrDataId              : 'id',
-            attrDataUrl             : 'url',
-            attrDataTarget          : 'target',
-            attrDataDefaultLabel    : 'default-label'
+            attrDataGroup                   : 'group',
+            attrDataId                      : 'id',
+            attrDataUrl                     : 'url',
+            attrDataTarget                  : 'target',
+            attrDataDefaultLabel            : 'default-label',
+            attrDataReplacement             : 'replacement',
+
+            attrDataReplacementContainer    : 'replacement-container',
+
+            indexSuccess                    : 'success',
+            indexError                      : 'error',
+            indexMenu                       : 'menu',
+            indexReplacement                : 'replacement',
+
+            verify                          : true,
+
+            errorCallback                   : function(message, data) { console.warn(message); }
 
         }, options);
 
@@ -36,12 +48,76 @@
 
         }
 
+        function indexExists(index, collection) {
+
+            "use strict";
+
+            return (
+            index in collection
+            );
+
+        }
+
         function preventStop(event) {
 
             "use strict";
 
             event.preventDefault();
             event.stopPropagation();
+
+        }
+
+        function objectGroup(group) {
+
+            "use strict";
+
+            return $('[data-' + settings.attrDataGroup + '="' + group + '"]');
+
+        }
+
+        function objectId(group, id) {
+
+            "use strict";
+
+            return $('[data-' + settings.attrDataGroup + '="' + group + '"][data-' + settings.attrDataId + '="' + id + '"]');
+
+        }
+
+        function objectTarget(group, id) {
+
+            "use strict";
+
+            return $('[data-' + settings.attrDataGroup + '="' + group + '"][data-' + settings.attrDataTarget + '="' + id + '"]');
+
+        }
+
+        function objectContainer(id) {
+
+            "use strict";
+
+            return $('[data-' + settings.attrDataReplacementContainer + '="' + id + '"]');
+
+        }
+
+        function getProperties(instance) {
+
+            "use strict";
+
+            var props = {
+                group : instance.data(settings.attrDataGroup),
+                id : instance.data(settings.attrDataId),
+                target : instance.data(settings.attrDataTarget),
+                url : instance.data(settings.attrDataUrl),
+                value : instance.val(),
+                replacementContainer : instance.data(settings.attrDataReplacement)
+            };
+
+            props.targetObject = objectId(props.group, props.target);
+            props.targetDefaultLabel = props.targetObject.data(settings.attrDataDefaultLabel);
+            props.parent = objectTarget(props.group, props.id);
+            props.parentUrl = props.parent.data(settings.attrDataUrl);
+
+            return props;
 
         }
 
@@ -72,13 +148,14 @@
             "use strict";
 
             var oDeferred = $.Deferred(),
+                collection = data[settings.indexMenu],
                 out = defaultOptionTag(defaultLabel);
 
-            $.each(data, function(key, value) {
+            $.each(collection, function(key, value) {
 
                 out += optionTag(value.name, value.value);
 
-                if ((key + 1) === data.length) {
+                if ((key + 1) === collection.length) {
 
                     oDeferred.resolve(out);
 
@@ -87,6 +164,22 @@
             });
 
             return oDeferred.promise();
+
+        }
+
+        function replaceData(container, replacement) {
+
+            "use strict";
+
+            var object = objectContainer(container);
+
+            if (object.length === 0) {
+
+                return;
+
+            }
+
+            object.html(replacement);
 
         }
 
@@ -104,7 +197,7 @@
 
             }
 
-            var targetObject = $('[data-' + settings.attrDataGroup + '="' + group + '"][data-' + settings.attrDataId + '="' + newTarget + '"]'),
+            var targetObject = objectId(group, newTarget),
                 targetDefaultLabel = targetObject.data(settings.attrDataDefaultLabel);
 
             if (targetObject.length > 0) {
@@ -120,14 +213,14 @@
             "use strict";
 
             var group = trigger.data(settings.attrDataGroup),
-                items = $('[data-' + settings.attrDataGroup + '="' + group + '"]').not(':disabled'),
+                items = objectGroup(group).not(':disabled'),
                 values = [];
 
             $.each(items, function() {
 
                 var value = $(this).val();
 
-                if (!isEmpty(value)) {
+                if ( ! isEmpty(value)) {
 
                     values.push({
                         "name" : $(this).prop('name'),
@@ -150,6 +243,102 @@
 
         }
 
+        function isDataValid(data) {
+
+            "use strict";
+
+            if ( ! data) {
+
+                throw new Error('Invalid data received!');
+
+            }
+
+            if ( ! data.success) {
+
+                if ( ! indexExists(settings.indexError, data)) {
+
+                    throw new Error('There was a problem with the request!');
+
+                }
+
+                settings.errorCallback(data[settings.indexError], data);
+
+                return false;
+
+            }
+
+            return true;
+
+        }
+
+        function emptyRequest(props) {
+
+            "use strict";
+
+            if ( ! isEmpty(props.parent) && ! isEmpty(props.parentUrl)) {
+
+                $.getJSON(props.parentUrl + '?' + formatQuery(props.selection), function(data) {
+
+                    if ( ! isDataValid(data)) {
+
+                        return;
+
+                    }
+
+                    replaceData(
+                        props.replacementContainer,
+                        data[settings.indexReplacement]
+                    );
+
+                });
+
+                return;
+
+            }
+
+            replaceData(props.replacementContainer, '');
+
+        }
+
+        function request(props) {
+
+            "use strict";
+
+            $.getJSON(props.url + '?' + formatQuery(props.selection), function(data) {
+
+                if ( ! isDataValid(data)) {
+
+                    return;
+
+                }
+
+                if (indexExists(settings.indexMenu, data)) {
+
+                    $.when(formatData(props.targetDefaultLabel, data))
+                        .then(function (items) {
+
+                            props.targetObject
+                                .html(items)
+                                .prop('disabled', false);
+
+                        });
+
+                }
+
+                if (indexExists(settings.indexReplacement, data)) {
+
+                    replaceData(
+                        props.replacementContainer,
+                        data[settings.indexReplacement]
+                    );
+
+                }
+
+
+            });
+
+        }
+
         function applyEvent(trigger) {
 
             "use strict";
@@ -164,55 +353,38 @@
 
                 }
 
-                var group = $(this).data(settings.attrDataGroup),
-                    target = $(this).data(settings.attrDataTarget),
-                    url = $(this).data(settings.attrDataUrl),
-                    value = $(this).val();
+                var props = getProperties($(this));
 
-                if (isEmpty(url)) {
+                if (isEmpty(props.url)) {
 
                     return;
 
                 }
 
-                if (isEmpty(target)) {
+                if ( ! isEmpty(props.target)) {
+
+                    resetCascade(
+                        props.group,
+                        props.targetObject,
+                        props.targetDefaultLabel
+                    );
+
+                }
+
+
+                props.selection = fetchSelectedData($(this));
+
+
+                if (isEmpty(props.value)) {
+
+                    emptyRequest(props);
 
                     return;
 
                 }
 
-                var targetObject = $('[data-' + settings.attrDataGroup + '="' + group + '"][data-' + settings.attrDataId + '="' + target + '"]'),
-                    targetDefaultLabel = targetObject.data(settings.attrDataDefaultLabel);
 
-
-                resetCascade(group, targetObject, targetDefaultLabel);
-
-
-                if (isEmpty(value)) {
-
-                    return;
-
-                }
-
-                var selection = fetchSelectedData($(this));
-
-                $.getJSON(url + '?' + formatQuery(selection), function(data) {
-
-                    if (!data) {
-
-                        throw new Error('Invalid data received!');
-
-                    }
-
-                    $.when(formatData(targetDefaultLabel, data)).then(function(items) {
-
-                        targetObject
-                            .html(items)
-                            .prop('disabled', false);
-
-                    });
-
-                });
+                request(props);
 
 
             });
@@ -229,13 +401,75 @@
 
         }
 
+        function hasAttribute(attr, instance) {
+
+            "use strict";
+
+            return ( ! isEmpty(instance.attr(attr)) );
+
+        }
+
+        function verify(instance) {
+
+            "use strict";
+
+            var oDeferred = $.Deferred(),
+                attributes = [
+                    settings.attrDataGroup,
+                    settings.attrDataId,
+                    settings.attrDataUrl,
+                    settings.attrDataTarget,
+                    settings.attrDataDefaultLabel,
+                    settings.attrDataReplacement
+                ];
+
+            if ( ! settings.verify) {
+
+                oDeferred.resolve();
+
+            } else {
+
+                $.each(attributes, function (key, value) {
+
+                    value = 'data-' + value;
+
+                    if (!hasAttribute(value, instance)) {
+
+                        console.log(
+                            instance.prop('name') +
+                            ' is missing attribute ' +
+                            value
+                        );
+
+                    }
+
+                    if ((key + 1) === attributes.length) {
+
+                        oDeferred.resolve();
+
+                    }
+
+                });
+
+            }
+
+            return oDeferred.promise();
+
+        }
+
         return this.each(function() {
 
             "use strict";
 
-            setUp($(this).not(':enabled'));
+            var selfInstance = $(this);
 
-            applyEvent($(this));
+            setUp(selfInstance.not(':enabled'));
+
+            $.when(verify(selfInstance)).then(function() {
+
+                applyEvent(selfInstance);
+
+            });
 
         });
 

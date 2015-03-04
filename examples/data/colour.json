@@ -1,8 +1,30 @@
-[
-  { "name" : "White", "value" : "1" },
-  { "name" : "Black", "value" : "2" },
-  { "name" : "Yellow", "value" : "3" },
-  { "name" : "Blue", "value" : "4" },
-  { "name" : "Green", "value" : "5" },
-  { "name" : "Red", "value" : "6" }
-]
+{
+  "success": true,
+  "replacement": "Records filtered by the make and any previous selection",
+  "menu": [
+    {
+      "name": "White",
+      "value": "1"
+    },
+    {
+      "name": "Black",
+      "value": "2"
+    },
+    {
+      "name": "Yellow",
+      "value": "3"
+    },
+    {
+      "name": "Blue",
+      "value": "4"
+    },
+    {
+      "name": "Green",
+      "value": "5"
+    },
+    {
+      "name": "Red",
+      "value": "6"
+    }
+  ]
+}

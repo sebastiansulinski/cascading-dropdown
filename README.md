@@ -112,6 +112,11 @@ To instantiate the plugin without overwriting any default settings simply call i
 </script>
 ```
 
+## Ajax call
+
+When the `change` event is triggered (once you've selected item from one of the menus), script collects all selected values associated with their names (taken from the select `name` attribute), and creates a `GET` query string which is appended to the url specified by the `data-url` attribute. It only collects values selected from menus in its own group (indicated by the `data-group` attribute) and which are not disabled. If the menu is not disabled, but doesn't have any selection - it's value is excluded from the query string.
+
+
 ## Properties
 
 You can overwrite the following settings of the plugin:

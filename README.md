@@ -91,7 +91,7 @@ In the following example I'm using
     - `data-target` : indicates the select element that should be affected by the value selected from its originator
     - `data-url` : url that needs to be called when the `change` event is triggered on the given select ( should also be applied to the last one if selection includes the replacement of the container - see below )
 - All selects except the first one are also required to have the following `data-*` attributes:
-    - `data-id` : the id of the element corresponds to the `data-trigger` of the previous element
+    - `data-id` : the id of the element corresponds to the `data-target` of the previous element
     - `data-default-label` : the default label for the first `option` item
 - Optional `data-*` attributes:
     - `data-replacement` : corresponding container with `data-replacement-container` - used for replacing additional content with each selection.

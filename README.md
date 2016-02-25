@@ -71,10 +71,18 @@ In the following example I'm using
         data-default-label="Select size"
         data-replacement="container1"
         data-url="data/final.json"
+        data-final
 
         disabled
         >
         </select>
+
+        <input
+            type="submit"
+            class="small button"
+            value="ADD TO BASKET"
+            disabled
+            >
 
 </form>
 ```

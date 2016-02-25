@@ -103,7 +103,7 @@
                         data-default-label="Select size"
                         data-replacement="container1"
                         data-url="data/final.json"
-
+                        data-final
                         disabled
                         >
                         </select>
@@ -111,8 +111,20 @@
 
             </div>
 
+            <div class="row">
 
+                <div class="large-4 medium-6 columns large-offset-4 medium-offset-3">
 
+                    <input
+                        type="submit"
+                        class="small button"
+                        value="ADD TO BASKET"
+                        disabled
+                    >
+
+                </div>
+
+            </div>
 
         </form>
 
@@ -210,9 +222,6 @@
 
             </div>
 
-
-
-
         </form>
 
         <div
@@ -228,7 +237,24 @@
 <script src="js/jquery-2.1.3.min.js"></script>
 <script src="js/jquery.cascading-drop-down.js"></script>
 <script>
-    $('.cascadingDropDown').ssdCascadingDropDown();
+    $('.cascadingDropDown').ssdCascadingDropDown({
+        nonFinalCallback: function(trigger, props, data) {
+            trigger.closest('form')
+                    .find('input[type="submit"]')
+                    .attr('disabled', true);
+        },
+        finalCallback: function(trigger, props, data) {
+            if (props.isValueEmpty()) {
+                trigger.closest('form')
+                        .find('input[type="submit"]')
+                        .attr('disabled', true);
+            } else {
+                trigger.closest('form')
+                        .find('input[type="submit"]')
+                        .attr('disabled', false);
+            }
+        }
+    });
 </script>
 </body>
 </html>

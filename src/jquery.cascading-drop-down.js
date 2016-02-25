@@ -1,12 +1,12 @@
 /*
  * ssdCascadingDropDown jQuery plugin
  * Examples and documentation at: https://github.com/sebastiansulinski/cascading-dropdown
- * Copyright (c) 2015 Sebastian Sulinski
- * Version: 1.2.3 (04-MAR-2015)
+ * Copyright (c) 2016 Sebastian Sulinski
+ * Version: 1.3.0 (25-FEB-2016)
  * Licensed under the MIT.
  * Requires: jQuery v1.9 or later
  */
-;(function($) {
+;(function($, undefined) {
 
     $.fn.ssdCascadingDropDown = function(options) {
 
@@ -33,6 +33,8 @@
 
             verify                          : true,
 
+            nonFinalCallback                : function(trigger, props, data) {},
+            finalCallback                   : function(trigger, props, data) {},
             errorCallback                   : function(message, data) { console.warn(message); }
 
         }, options);
@@ -43,7 +45,7 @@
             "use strict";
 
             return (
-            typeof value === 'undefined' ||
+            value === undefined ||
             value === '' ||
             value === false ||
             value.length < 1
@@ -112,7 +114,20 @@
                 target : instance.data(settings.attrDataTarget),
                 url : instance.data(settings.attrDataUrl),
                 value : instance.val(),
-                replacementContainer : instance.data(settings.attrDataReplacement)
+                isValueEmpty : function() {
+
+                    "use strict";
+                    return isEmpty(this.value)
+
+                },
+                replacementContainer : instance.data(settings.attrDataReplacement),
+                final : instance.data('final'),
+                isFinal : function() {
+
+                    "use strict";
+                    return this.final !== undefined;
+
+                }
             };
 
             props.targetObject = objectId(props.group, props.target);
@@ -280,7 +295,7 @@
 
         }
 
-        function emptyRequest(props) {
+        function emptyRequest(trigger, props) {
 
             "use strict";
 
@@ -293,6 +308,8 @@
                         return;
 
                     }
+
+                    callback(trigger, props, data);
 
                     replaceData(
                         props.replacementContainer,
@@ -309,7 +326,21 @@
 
         }
 
-        function request(props) {
+        function callback(trigger, props, data) {
+
+            "use strict";
+
+            if (props.isFinal()) {
+
+                return settings.finalCallback(trigger, props, data);
+
+            }
+
+            return settings.nonFinalCallback(trigger, props, data);
+
+        }
+
+        function request(trigger, props) {
 
             "use strict";
 
@@ -320,6 +351,8 @@
                     return;
 
                 }
+
+                callback(trigger, props, data);
 
                 if (indexExists(settings.indexMenu, data)) {
 
@@ -380,21 +413,17 @@
 
                 }
 
-
                 props.selection = fetchSelectedData($(this));
-
 
                 if (isEmpty(props.value)) {
 
-                    emptyRequest(props);
+                    emptyRequest($(this), props);
 
                     return;
 
                 }
 
-
-                request(props);
-
+                request($(this), props);
 
             });
 

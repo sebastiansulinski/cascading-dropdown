@@ -122,26 +122,57 @@ When the `change` event is triggered (once you've selected item from one of the 
 You can overwrite the following settings of the plugin:
 
 ```
-attrDataGroup                   : 'group', // data-group attribute
-attrDataId                      : 'id', // data-id attribute
-attrDataUrl                     : 'url', // data-url attribute
-attrDataTarget                  : 'target', // data-target attribute
-attrDataDefaultLabel            : 'default-label', // data-default-label attribute
-attrDataReplacement             : 'replacement', // data-replacement attribute
+// data-group attribute
+attrDataGroup                   : 'group',
 
-attrDataReplacementContainer    : 'replacement-container', // data-replacement-container attribute
-attrDataReplacementDefault      : 'default-content', // data-default-content attribute
+// data-id attribute
+attrDataId                      : 'id',
 
-classReplacementContainer       : 'cascadingContainer', // class associated with the receiving container
+// data-url attribute
+attrDataUrl                     : 'url',
 
-indexSuccess                    : 'success', // json response key to indicate whether the call was successful (true) or not (false)
-indexError                      : 'error', // json response key to store the error message
-indexMenu                       : 'menu', // json response key to store the new menu items
-indexReplacement                : 'replacement', // json response key to store the replacement for the content container
+// data-target attribute
+attrDataTarget                  : 'target',
 
-verify                          : true, // whether to run verification with instantiation
+// data-default-label attribute
+attrDataDefaultLabel            : 'default-label',
 
-errorCallback                   : function(message, data) { console.warn(message); } // method call when json response was not successful { success : false }. It takes the error message plus the all data returned back with the call
+// data-replacement attribute
+attrDataReplacement             : 'replacement',
+
+// data-replacement-container attribute
+attrDataReplacementContainer    : 'replacement-container',
+
+// data-default-content attribute
+attrDataReplacementDefault      : 'default-content',
+
+// class associated with the receiving container
+classReplacementContainer       : 'cascadingContainer',
+
+// json response key to indicate whether the call was successful (true) or not (false)
+indexSuccess                    : 'success',
+
+// json response key to store the error message
+indexError                      : 'error',
+
+// json response key to store the new menu items
+indexMenu                       : 'menu',
+
+// json response key to store the replacement for the content container
+indexReplacement                : 'replacement',
+
+// whether to run verification with instantiation
+verify                          : true,
+
+// method to be called on each 'change' event of the select without the 'data-final' attribute
+nonFinalCallback                : function(trigger, props, data) {},
+
+// method to be called on 'change' event of the select with the 'data-final' attribute
+finalCallback                   : function(trigger, props, data) {},
+
+// method call when json response was not successful { success : false }.
+// It takes the error message plus the all data returned back with the call
+errorCallback                   : function(message, data) { console.warn(message); }
 ```
 
 ## Verification
@@ -164,6 +195,46 @@ If you'd like to disable verification simply pass in the argument `verify` set t
 ```
 $('.cascadingDropDown').ssdCascadingDropDown({
     verify : false
+});
+```
+
+## Non final selection callback
+
+The `nonFinalCallback` method is called with each `change` event on the select element that does not have `data-final` attribute.
+It takes 3 arguments: `trigger` representing the select object, `props` with all properties of the object and `data` containing json response.
+The example below illustrates how you can use it to ensure that the submit button is always disabled with the non-final select.
+
+```
+$('.cascadingDropDown').ssdCascadingDropDown({
+    nonFinalCallback: function(trigger, props, data) {
+
+        trigger.closest('form')
+                .find('input[type="submit"]')
+                .attr('disabled', true);
+
+    }
+});
+```
+
+## Final selection callback
+
+The `nonFinalCallback` method is called with each `change` event on the select element with the `data-final` attribute - representing last select in the collection.
+It takes 3 arguments: `trigger` representing the select object, `props` with all properties of the object and `data` containing json response.
+The example below illustrates how you can use it to enable the submit button if selected value is not empty and disable it otherwise.
+
+```
+$('.cascadingDropDown').ssdCascadingDropDown({
+    finalCallback: function(trigger, props, data) {
+        if (props.isValueEmpty()) {
+            trigger.closest('form')
+                    .find('input[type="submit"]')
+                    .attr('disabled', true);
+        } else {
+            trigger.closest('form')
+                    .find('input[type="submit"]')
+                    .attr('disabled', false);
+        }
+    }
 });
 ```
 

@@ -238,12 +238,15 @@
 <script src="js/jquery.cascading-drop-down.js"></script>
 <script>
     $('.cascadingDropDown').ssdCascadingDropDown({
-        nonFinalCallback: function(trigger, props, data) {
+        nonFinalCallback: function(trigger, props, data, self) {
+
             trigger.closest('form')
                     .find('input[type="submit"]')
                     .attr('disabled', true);
+
         },
         finalCallback: function(trigger, props, data) {
+
             if (props.isValueEmpty()) {
                 trigger.closest('form')
                         .find('input[type="submit"]')
@@ -253,6 +256,7 @@
                         .find('input[type="submit"]')
                         .attr('disabled', false);
             }
+
         }
     });
 </script>

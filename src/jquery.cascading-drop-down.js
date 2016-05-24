@@ -2,7 +2,7 @@
  * ssdCascadingDropDown jQuery plugin
  * Examples and documentation at: https://github.com/sebastiansulinski/cascading-dropdown
  * Copyright (c) 2016 Sebastian Sulinski
- * Version: 1.3.0 (25-FEB-2016)
+ * Version: 1.3.1 (24-MAY-2016)
  * Licensed under the MIT.
  * Requires: jQuery v1.9 or later
  */
@@ -12,32 +12,33 @@
 
         "use strict";
 
-        var settings = $.extend({
+        var self = this,
+            settings = $.extend({
 
-            attrDataGroup                   : 'group',
-            attrDataId                      : 'id',
-            attrDataUrl                     : 'url',
-            attrDataTarget                  : 'target',
-            attrDataDefaultLabel            : 'default-label',
-            attrDataReplacement             : 'replacement',
+                attrDataGroup                   : 'group',
+                attrDataId                      : 'id',
+                attrDataUrl                     : 'url',
+                attrDataTarget                  : 'target',
+                attrDataDefaultLabel            : 'default-label',
+                attrDataReplacement             : 'replacement',
 
-            attrDataReplacementContainer    : 'replacement-container',
-            attrDataReplacementDefault      : 'default-content',
+                attrDataReplacementContainer    : 'replacement-container',
+                attrDataReplacementDefault      : 'default-content',
 
-            classReplacementContainer       : 'cascadingContainer',
+                classReplacementContainer       : 'cascadingContainer',
 
-            indexSuccess                    : 'success',
-            indexError                      : 'error',
-            indexMenu                       : 'menu',
-            indexReplacement                : 'replacement',
+                indexSuccess                    : 'success',
+                indexError                      : 'error',
+                indexMenu                       : 'menu',
+                indexReplacement                : 'replacement',
 
-            verify                          : true,
+                verify                          : true,
 
-            nonFinalCallback                : function(trigger, props, data) {},
-            finalCallback                   : function(trigger, props, data) {},
-            errorCallback                   : function(message, data) { console.warn(message); }
+                nonFinalCallback                : function(trigger, props, data, self) {},
+                finalCallback                   : function(trigger, props, data, self) {},
+                errorCallback                   : function(message, data) { console.warn(message); }
 
-        }, options);
+            }, options);
 
 
         function isEmpty(value) {
@@ -45,10 +46,10 @@
             "use strict";
 
             return (
-            value === undefined ||
-            value === '' ||
-            value === false ||
-            value.length < 1
+                value === undefined ||
+                value === '' ||
+                value === false ||
+                value.length < 1
             );
 
         }
@@ -58,7 +59,7 @@
             "use strict";
 
             return (
-            index in collection
+                index in collection
             );
 
         }
@@ -161,12 +162,11 @@
 
         }
 
-        function formatData(defaultLabel, data) {
+        this.formatOptions = function(defaultLabel, collection) {
 
             "use strict";
 
             var oDeferred = $.Deferred(),
-                collection = data[settings.indexMenu],
                 out = defaultOptionTag(defaultLabel);
 
             $.each(collection, function(key, value) {
@@ -182,6 +182,14 @@
             });
 
             return oDeferred.promise();
+
+        };
+
+        function formatData(defaultLabel, data) {
+
+            "use strict";
+
+            return self.formatOptions(defaultLabel, data[settings.indexMenu]);
 
         }
 
@@ -332,11 +340,11 @@
 
             if (props.isFinal()) {
 
-                return settings.finalCallback(trigger, props, data);
+                return settings.finalCallback(trigger, props, data, self);
 
             }
 
-            return settings.nonFinalCallback(trigger, props, data);
+            return settings.nonFinalCallback(trigger, props, data, self);
 
         }
 

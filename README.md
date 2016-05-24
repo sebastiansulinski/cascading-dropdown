@@ -173,10 +173,10 @@ indexReplacement                : 'replacement',
 verify                          : true,
 
 // method to be called on each 'change' event of the select without the 'data-final' attribute
-nonFinalCallback                : function(trigger, props, data) {},
+nonFinalCallback                : function(trigger, props, data, self) {},
 
 // method to be called on 'change' event of the select with the 'data-final' attribute
-finalCallback                   : function(trigger, props, data) {},
+finalCallback                   : function(trigger, props, data, self) {},
 
 // method call when json response was not successful { success : false }.
 // It takes the error message plus the all data returned back with the call
@@ -209,12 +209,12 @@ $('.cascadingDropDown').ssdCascadingDropDown({
 ## Non final selection callback
 
 The `nonFinalCallback` method is called with each `change` event on the select element that does not have `data-final` attribute.
-It takes 3 arguments: `trigger` representing the select object, `props` with all properties of the object and `data` containing json response.
+It takes 4 arguments: `trigger` representing the select object, `props` with all properties of the object, `data` containing json response and `self` which represents the plugin object.
 The example below illustrates how you can use it to ensure that the submit button is always disabled with the non-final select.
 
 ```
 $('.cascadingDropDown').ssdCascadingDropDown({
-    nonFinalCallback: function(trigger, props, data) {
+    nonFinalCallback: function(trigger, props, data, self) {
 
         trigger.closest('form')
                 .find('input[type="submit"]')
@@ -226,13 +226,13 @@ $('.cascadingDropDown').ssdCascadingDropDown({
 
 ## Final selection callback
 
-The `nonFinalCallback` method is called with each `change` event on the select element with the `data-final` attribute - representing last select in the collection.
-It takes 3 arguments: `trigger` representing the select object, `props` with all properties of the object and `data` containing json response.
+The `finalCallback` method is called with each `change` event on the select element with the `data-final` attribute - representing last select in the collection.
+It takes 4 arguments: `trigger` representing the select object, `props` with all properties of the object, `data` containing json response and `self` which represents the plugin object.
 The example below illustrates how you can use it to enable the submit button if selected value is not empty and disable it otherwise.
 
 ```
 $('.cascadingDropDown').ssdCascadingDropDown({
-    finalCallback: function(trigger, props, data) {
+    finalCallback: function(trigger, props, data, self) {
         if (props.isValueEmpty()) {
             trigger.closest('form')
                     .find('input[type="submit"]')

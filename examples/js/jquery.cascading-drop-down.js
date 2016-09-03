@@ -2,7 +2,7 @@
  * ssdCascadingDropDown jQuery plugin
  * Examples and documentation at: https://github.com/sebastiansulinski/cascading-dropdown
  * Copyright (c) 2016 Sebastian Sulinski
- * Version: 1.3.1 (24-MAY-2016)
+ * Version: 1.4.0 (3-SEP-2016)
  * Licensed under the MIT.
  * Requires: jQuery v1.9 or later
  */
@@ -33,6 +33,9 @@
                 indexReplacement                : 'replacement',
 
                 verify                          : true,
+
+                startCall                       : function(trigger, props) {},
+                endCall                         : function(trigger, props) {},
 
                 nonFinalCallback                : function(trigger, props, data, self) {},
                 finalCallback                   : function(trigger, props, data, self) {},
@@ -352,39 +355,51 @@
 
             "use strict";
 
-            $.getJSON(props.url + '?' + formatQuery(props.selection), function(data) {
+            settings.startCall(trigger, props);
 
-                if ( ! isDataValid(data)) {
+            $.ajax({
+                dataType: "json",
+                url: props.url + '?' + formatQuery(props.selection),
+                success: function (data) {
 
-                    return;
+                    settings.endCall(trigger, props);
+
+                    if (!isDataValid(data)) {
+                        return;
+                    }
+
+                    callback(trigger, props, data);
+
+                    if (indexExists(settings.indexMenu, data)) {
+
+                        $.when(formatData(props.targetDefaultLabel, data))
+                            .then(function (items) {
+
+                                props.targetObject
+                                    .html(items)
+                                    .prop('disabled', false);
+
+                            });
+
+                    }
+
+                    if (indexExists(settings.indexReplacement, data)) {
+
+                        replaceData(
+                            props.replacementContainer,
+                            data[settings.indexReplacement]
+                        );
+
+                    }
+
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+
+                    settings.endCall(trigger, props);
+
+                    throw new Error(errorThrown);
 
                 }
-
-                callback(trigger, props, data);
-
-                if (indexExists(settings.indexMenu, data)) {
-
-                    $.when(formatData(props.targetDefaultLabel, data))
-                        .then(function (items) {
-
-                            props.targetObject
-                                .html(items)
-                                .prop('disabled', false);
-
-                        });
-
-                }
-
-                if (indexExists(settings.indexReplacement, data)) {
-
-                    replaceData(
-                        props.replacementContainer,
-                        data[settings.indexReplacement]
-                    );
-
-                }
-
-
             });
 
         }
@@ -397,18 +412,16 @@
 
                 preventStop(event);
 
-                if ($(this).is(':disabled')) {
+                var trigger = $(this);
 
+                if (trigger.is(':disabled')) {
                     return;
-
                 }
 
-                var props = getProperties($(this));
+                var props = getProperties(trigger);
 
                 if (isEmpty(props.url)) {
-
                     return;
-
                 }
 
                 if ( ! isEmpty(props.target)) {
@@ -421,17 +434,17 @@
 
                 }
 
-                props.selection = fetchSelectedData($(this));
+                props.selection = fetchSelectedData(trigger);
 
                 if (isEmpty(props.value)) {
 
-                    emptyRequest($(this), props);
+                    emptyRequest(trigger, props);
 
                     return;
 
                 }
 
-                request($(this), props);
+                request(trigger, props);
 
             });
 

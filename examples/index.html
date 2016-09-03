@@ -16,6 +16,15 @@
             width: 100%;
             border-top: dashed 1px #aaa;
         }
+        .spinner {
+            display: block;
+            margin: 0 0 1rem 0;
+            padding: 0.5rem;
+            background-color: #FAFAFA;
+            border: solid 1px #ccc;
+            font-size: 0.875rem;
+            height: 2.3125rem;
+        }
     </style>
 </head>
 <body>
@@ -238,6 +247,20 @@
 <script src="js/jquery.cascading-drop-down.js"></script>
 <script>
     $('.cascadingDropDown').ssdCascadingDropDown({
+        startCall: function(trigger, props) {
+
+            var spinner = '<div class="spinner"><i class="fa fa-spinner fa-spin"></i> processing</div>';
+
+            trigger.hide();
+            trigger.parent().prepend(spinner);
+
+        },
+        endCall: function(trigger, props) {
+
+            trigger.parent().find('.spinner').remove();
+            trigger.show();
+
+        },
         nonFinalCallback: function(trigger, props, data, self) {
 
             trigger.closest('form')

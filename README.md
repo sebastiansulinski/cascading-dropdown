@@ -172,6 +172,12 @@ indexReplacement                : 'replacement',
 // whether to run verification with instantiation
 verify                          : true,
 
+// method called before ajax call is made
+startCall                       : function(trigger, props) {},
+
+// method called after ajax call returned the response
+endCall                         : function(trigger, props) {},
+
 // method to be called on each 'change' event of the select without the 'data-final' attribute
 nonFinalCallback                : function(trigger, props, data, self) {},
 
@@ -206,6 +212,44 @@ $('.cascadingDropDown').ssdCascadingDropDown({
 });
 ```
 
+## Start call method
+
+The `startCall` method is called right before the ajax call is made.
+The example below shows how to add spinner, that temporarily replaces the select while the call is in progress.
+
+```
+$('.cascadingDropDown').ssdCascadingDropDown({
+
+    startCall: function(trigger, props) {
+    
+        var spinner = '<div class="spinner"><i class="fa fa-spinner fa-spin"></i> processing</div>';
+    
+        trigger.hide();
+        trigger.parent().prepend(spinner);
+    
+    }
+    
+});
+```
+
+## End call method
+
+The `endCall` method is called right after the ajax call has returned the response.
+The example below shows how to remove previously added spinner and show the select again.
+
+```
+$('.cascadingDropDown').ssdCascadingDropDown({
+
+    endCall: function(trigger, props) {
+    
+        trigger.parent().find('.spinner').remove();
+        trigger.show();
+    
+    }
+    
+});
+```
+
 ## Non final selection callback
 
 The `nonFinalCallback` method is called with each `change` event on the select element that does not have `data-final` attribute.
@@ -214,6 +258,7 @@ The example below illustrates how you can use it to ensure that the submit butto
 
 ```
 $('.cascadingDropDown').ssdCascadingDropDown({
+
     nonFinalCallback: function(trigger, props, data, self) {
 
         trigger.closest('form')
@@ -221,6 +266,7 @@ $('.cascadingDropDown').ssdCascadingDropDown({
                 .attr('disabled', true);
 
     }
+    
 });
 ```
 
@@ -232,6 +278,7 @@ The example below illustrates how you can use it to enable the submit button if 
 
 ```
 $('.cascadingDropDown').ssdCascadingDropDown({
+
     finalCallback: function(trigger, props, data, self) {
         if (props.isValueEmpty()) {
             trigger.closest('form')
@@ -243,6 +290,7 @@ $('.cascadingDropDown').ssdCascadingDropDown({
                     .attr('disabled', false);
         }
     }
+    
 });
 ```
 

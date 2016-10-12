@@ -1,6 +1,6 @@
 {
   "name": "cascading-dropdown",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Cascading form dropdown menus with jQuery",
   "main": "src/jquery.cascading-dropdown.js",
   "directories": {

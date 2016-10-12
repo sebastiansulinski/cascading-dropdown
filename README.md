@@ -181,8 +181,14 @@ endCall                         : function(trigger, props) {},
 // method to be called on each 'change' event of the select without the 'data-final' attribute
 nonFinalCallback                : function(trigger, props, data, self) {},
 
+// method to be caleld on each 'change' event of the select without the 'data-final' attribute without value
+nonFinalEmptyCallback           : function(trigger, props, self) {},
+
 // method to be called on 'change' event of the select with the 'data-final' attribute
 finalCallback                   : function(trigger, props, data, self) {},
+
+// method to be called on 'change' event of the select with the 'data-final' attribute without value
+finalEmptyCallback              : function(trigger, props, self) {},
 
 // method call when json response was not successful { success : false }.
 // It takes the error message plus the all data returned back with the call

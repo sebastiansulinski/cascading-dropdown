@@ -2,7 +2,7 @@
  * ssdCascadingDropDown jQuery plugin
  * Examples and documentation at: https://github.com/sebastiansulinski/cascading-dropdown
  * Copyright (c) 2016 Sebastian Sulinski
- * Version: 1.4.0 (3-SEP-2016)
+ * Version: 1.4.1 (12-OCT-2016)
  * Licensed under the MIT.
  * Requires: jQuery v1.9 or later
  */
@@ -38,7 +38,9 @@
                 endCall                         : function(trigger, props) {},
 
                 nonFinalCallback                : function(trigger, props, data, self) {},
+                nonFinalEmptyCallback           : function(trigger, props, self) {},
                 finalCallback                   : function(trigger, props, data, self) {},
+                finalEmptyCallback              : function(trigger, props, self) {},
                 errorCallback                   : function(message, data) { console.warn(message); }
 
             }, options);
@@ -306,9 +308,25 @@
 
         }
 
+        function emptyCallback(trigger, props) {
+
+            "use strict";
+
+            if (props.isFinal()) {
+
+                return settings.finalEmptyCallback(trigger, props, self);
+
+            }
+
+            return settings.nonFinalEmptyCallback(trigger, props, self);
+
+        }
+
         function emptyRequest(trigger, props) {
 
             "use strict";
+
+            emptyCallback(trigger, props);
 
             if ( ! isEmpty(props.parent) && ! isEmpty(props.parentUrl)) {
 

@@ -261,11 +261,21 @@
             trigger.show();
 
         },
+        nonFinalEmptyCallback: function(trigger, props, self) {
+
+            console.log('non final');
+
+        },
         nonFinalCallback: function(trigger, props, data, self) {
 
             trigger.closest('form')
                     .find('input[type="submit"]')
                     .attr('disabled', true);
+
+        },
+        finalEmptyCallback: function(trigger, props, self) {
+
+            console.log('final');
 
         },
         finalCallback: function(trigger, props, data) {

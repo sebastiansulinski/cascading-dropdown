@@ -3,8 +3,8 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Example</title>
-    <link rel="stylesheet" href="css/zurb-foundation-5.5.1/foundation.min.css">
-    <link rel="stylesheet" href="css/font-awesome-4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./assets/css/zurb-foundation-5.5.1/foundation.min.css">
+    <link rel="stylesheet" href="./assets/css/font-awesome-4.3.0/css/font-awesome.min.css">
     <style>
         body {
 
@@ -51,7 +51,7 @@
 
                         data-group="product-1"
                         data-target="make"
-                        data-url="data/make.json"
+                        data-url="./assets/data/make.json"
                         data-replacement="container1"
 
                         >
@@ -72,7 +72,7 @@
                         data-group="product-1"
                         data-id="make"
                         data-target="colour"
-                        data-url="data/colour.json"
+                        data-url="./assets/data/colour.json"
                         data-replacement="container1"
                         data-default-label="Select make"
 
@@ -93,7 +93,7 @@
                         data-group="product-1"
                         data-id="colour"
                         data-target="size"
-                        data-url="data/size.json"
+                        data-url="./assets/data/size.json"
                         data-replacement="container1"
                         data-default-label="Select colour"
 
@@ -111,7 +111,7 @@
                         data-id="size"
                         data-default-label="Select size"
                         data-replacement="container1"
-                        data-url="data/final.json"
+                        data-url="./assets/data/final.json"
                         data-final
                         disabled
                         >
@@ -162,7 +162,7 @@
 
                             data-group="product-2"
                             data-target="make"
-                            data-url="data/make.json"
+                            data-url="./assets/data/make.json"
                             data-replacement="container2"
 
                             >
@@ -183,7 +183,7 @@
                             data-group="product-2"
                             data-id="make"
                             data-target="colour"
-                            data-url="data/colour.json"
+                            data-url="./assets/data/colour.json"
                             data-replacement="container2"
                             data-default-label="Select make"
 
@@ -204,7 +204,7 @@
                             data-group="product-2"
                             data-id="colour"
                             data-target="size"
-                            data-url="data/size.json"
+                            data-url="./assets/data/size.json"
                             data-replacement="container2"
                             data-default-label="Select colour"
 
@@ -220,7 +220,7 @@
 
                             data-group="product-2"
                             data-id="size"
-                            data-url="data/final.json"
+                            data-url="./assets/data/final.json"
                             data-replacement="container2"
                             data-default-label="Select size"
 
@@ -243,8 +243,8 @@
 
 </div>
 
-<script src="js/jquery-2.1.3.min.js"></script>
-<script src="js/jquery.cascading-drop-down.js"></script>
+<script src="./node_modules/jquery/dist/jquery.min.js"></script>
+<script src="./src/jquery.cascading-drop-down.js"></script>
 <script>
     $('.cascadingDropDown').ssdCascadingDropDown({
         startCall: function(trigger, props) {

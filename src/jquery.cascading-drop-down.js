@@ -35,6 +35,7 @@
                     attrDataId                      : 'id',
                     attrDataUrl                     : 'url',
                     attrDataTarget                  : 'target',
+                    attrDataDisableDefaultLabel     : 'disable-default-label',
                     attrDataDefaultLabel            : 'default-label',
                     attrDataReplacement             : 'replacement',
 
@@ -153,6 +154,7 @@
                 };
 
                 props.targetObject = objectId(props.group, props.target);
+                props.targetDisableDefaultLabel = props.targetObject.data(settings.attrDataDisableDefaultLabel);
                 props.targetDefaultLabel = props.targetObject.data(settings.attrDataDefaultLabel);
                 props.parent = objectTarget(props.group, props.id);
                 props.parentUrl = props.parent.data(settings.attrDataUrl);
@@ -175,20 +177,24 @@
 
             }
 
-            function defaultOptionTag(label) {
+            function defaultOptionTag(label, disableDefaultLabel) {
 
                 "use strict";
 
-                return optionTag(label);
+                if (disableDefaultLabel) {
+                    return  '';
+                }
+
+                return  optionTag(label);
 
             }
 
-            this.formatOptions = function(defaultLabel, collection) {
+            this.formatOptions = function(defaultLabel, disableDefaultLabel, collection) {
 
                 "use strict";
 
                 var oDeferred = $.Deferred(),
-                    out = defaultOptionTag(defaultLabel);
+                    out = defaultOptionTag(defaultLabel, disableDefaultLabel);
 
                 $.each(collection, function(key, value) {
 
@@ -206,11 +212,11 @@
 
             };
 
-            function formatData(defaultLabel, data) {
+            function formatData(defaultLabel, disableDefaultLabel, data) {
 
                 "use strict";
 
-                return self.formatOptions(defaultLabel, data[settings.indexMenu]);
+                return self.formatOptions(defaultLabel, disableDefaultLabel, data[settings.indexMenu]);
 
             }
 
@@ -236,11 +242,11 @@
 
             }
 
-            function resetCascade(group, target, defaultLabel) {
+            function resetCascade(group, target, defaultLabel, disableDefaultLabel) {
 
                 "use strict";
 
-                target.html(defaultOptionTag(defaultLabel)).prop('disabled', true);
+                target.html(defaultOptionTag(defaultLabel, disableDefaultLabel)).prop('disabled', true);
 
                 var newTarget = target.data(settings.attrDataTarget);
 
@@ -251,11 +257,12 @@
                 }
 
                 var targetObject = objectId(group, newTarget),
-                    targetDefaultLabel = targetObject.data(settings.attrDataDefaultLabel);
+                    targetDefaultLabel = targetObject.data(settings.attrDataDefaultLabel),
+                    targetDisableDefaultLabel = targetObject.data(settings.attrDataDefaultLabel, settings.attrDataDisableDefaultLabel);
 
                 if (targetObject.length > 0) {
 
-                    resetCascade(group, targetObject, targetDefaultLabel);
+                    resetCascade(group, targetObject, targetDefaultLabel, targetDisableDefaultLabel);
 
                 }
 
@@ -406,7 +413,7 @@
 
                         if (indexExists(settings.indexMenu, data)) {
 
-                            $.when(formatData(props.targetDefaultLabel, data))
+                            $.when(formatData(props.targetDefaultLabel, props.targetDisableDefaultLabel, data))
                                 .then(function (items) {
 
                                     props.targetObject
@@ -463,7 +470,8 @@
                         resetCascade(
                             props.group,
                             props.targetObject,
-                            props.targetDefaultLabel
+                            props.targetDefaultLabel,
+                            props.targetDisableDefaultLabel
                         );
 
                     }
@@ -545,7 +553,7 @@
                 "use strict";
 
                 trigger
-                    .html(defaultOptionTag(trigger.data(settings.attrDataDefaultLabel)))
+                    .html(defaultOptionTag(trigger.data(settings.attrDataDefaultLabel), trigger.data(settings.attrDataDisableDefaultLabel)))
                     .prop('disabled', true);
 
             }

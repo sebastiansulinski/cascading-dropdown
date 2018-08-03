@@ -57,6 +57,7 @@
                     nonFinalEmptyCallback           : function(trigger, props, self) {},
                     finalCallback                   : function(trigger, props, data, self) {},
                     finalEmptyCallback              : function(trigger, props, self) {},
+                    domRenderCallback               : function(trigger, props) {},
                     errorCallback                   : function(message, data) { console.warn(message); }
 
                 }, options);
@@ -413,6 +414,7 @@
                                         .html(items)
                                         .prop('disabled', false);
 
+                                    settings.domRenderCallback(trigger, props);
                                 });
 
                         }
@@ -424,6 +426,7 @@
                                 data[settings.indexReplacement]
                             );
 
+                            settings.domRenderCallback(trigger, props);
                         }
 
                     },

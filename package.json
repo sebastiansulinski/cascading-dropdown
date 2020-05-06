@@ -21,7 +21,7 @@
     "url": "https://github.com/sebastiansulinski/cascading-dropdown/issues"
   },
   "dependencies": {
-    "jquery": ">= 1.9"
+    "jquery": "^3.5.1"
   },
   "homepage": "https://github.com/sebastiansulinski/cascading-dropdown"
 }
